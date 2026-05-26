@@ -1,0 +1,464 @@
+<style>
+:root{
+  --font-sans: Inter, Arial, sans-serif;
+
+  --color-text-primary:#f5f5f5;
+  --color-text-secondary:#bdbdbd;
+  --color-text-tertiary:#8a8a8a;
+
+  --color-background-primary:#1e1e1e;
+  --color-background-secondary:#2a2a2a;
+
+  --color-border-primary:#555;
+  --color-border-secondary:#444;
+  --color-border-tertiary:#3a3a3a;
+
+  --border-radius-md:10px;
+  --border-radius-lg:16px;
+}
+
+body{
+  background:#121212;
+  margin:0;
+  padding:24px;
+  font-family: var(--font-sans);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+.wrap{padding:1rem 0; max-width: 800px; margin: 0 auto;}
+.header{padding:1rem 1.25rem;background:var(--color-background-secondary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);margin-bottom:1.25rem}
+.header h1{font-size:18px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+.header p{font-size:12px;color:var(--color-text-secondary)}
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem}
+.tab{font-size:12px;padding:5px 11px;border:0.5px solid var(--color-border-tertiary);border-radius:20px;background:transparent;color:var(--color-text-secondary);cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab:hover{border-color:var(--color-border-secondary);color:var(--color-text-primary)}
+.tab.on{border-color:var(--color-border-primary);color:var(--color-text-primary);font-weight:500;background:var(--color-background-secondary)}
+.spacer{flex:1}
+.btn-reset{font-size:12px;padding:5px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:transparent;color:var(--color-text-secondary);cursor:pointer}
+.btn-reset:hover{color:var(--color-text-primary);border-color:var(--color-border-secondary)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center}
+.stat-v{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.stat-l{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--color-text-secondary)}
+.leg-sq{width:12px;height:12px;border-radius:2px}
+.q{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:.875rem}
+.q.done{border-color:var(--color-border-secondary)}
+.qmeta{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.qn{font-size:11px;color:var(--color-text-secondary);font-weight:500}
+.badge{font-size:10px;padding:2px 8px;border-radius:10px;font-weight:500}
+.b-sein{background:#EEEDFE;color:#3C3489}
+.b-hepatique{background:#E1F5EE;color:#085041}
+.b-colorectal{background:#FAEEDA;color:#633806}
+.b-poumon{background:#E6F1FB;color:#0C447C}
+.b-ovaire{background:#FBEAF0;color:#72243E}
+.b-polype{background:#FAECE7;color:#712B13}
+.b-year{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.b-qcu{background:var(--color-background-secondary);color:var(--color-text-secondary)}
+.qtxt{font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.6;margin-bottom:12px}
+.qnote{font-size:12px;color:var(--color-text-secondary);font-style:italic;margin-bottom:10px}
+.opts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.opt-label{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);cursor:pointer;transition:background .1s,border-color .1s;user-select:none}
+.opt-label:hover{background:var(--color-background-secondary)}
+.opt-label input[type=checkbox],.opt-label input[type=radio]{display:none}
+.custom-cb{width:18px;height:18px;min-width:18px;border-radius:3px;border:0.5px solid var(--color-border-secondary);display:flex;align-items:center;justify-content:center;margin-top:1px;transition:all .12s;background:var(--color-background-primary)}
+.opt-label.sel .custom-cb{background:var(--color-text-primary);border-color:var(--color-text-primary)}
+.opt-label.sel .custom-cb::after{content:'';display:block;width:5px;height:9px;border:1.5px solid var(--color-background-primary);border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.opt-label.correct{ background:#EAF3DE; border-color:#639922; color:#111;}
+.opt-label.correct .custom-cb{background:#639922;border-color:#639922}
+.opt-label.correct .custom-cb::after{content:'';display:block;width:5px;height:9px;border:1.5px solid white;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px)}
+.opt-label.wrong{ background:#FCEBEB; border-color:#E24B4A; color:#111;}
+.opt-label.wrong .custom-cb{background:#E24B4A;border-color:#E24B4A}
+.opt-label.wrong .custom-cb::after{content:'✗';color:white;font-size:11px;font-style:normal;line-height:1}
+.opt-label.missed{ background:#FAEEDA; border-color:#BA7517; color:#111;}
+.opt-label.missed .custom-cb{background:#BA7517;border-color:#BA7517}
+.opt-label.missed .custom-cb::after{content:'✓';color:white;font-size:11px;line-height:1}
+.opt-letter{font-size:12px;color:var(--color-text-secondary);min-width:14px;margin-top:1px}
+.opt-label.sel .opt-letter,.opt-label.correct .opt-letter,.opt-label.wrong .opt-letter,.opt-label.missed .opt-letter{color:inherit}
+.opt-text{ font-size:13px; color:#f5f5f5; line-height:1.5 }
+.opt-label.correct .opt-text, .opt-label.wrong .opt-text, .opt-label.missed .opt-text{ color:#111; }
+.btn-check{width:100%;padding:9px;font-size:13px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);cursor:pointer;transition:all .12s}
+.btn-check:hover{background:var(--color-background-primary);border-color:var(--color-border-primary)}
+.btn-check:disabled{opacity:.4;cursor:not-allowed}
+.fb{font-size:12px;padding:8px 12px;border-radius:var(--border-radius-md);margin-top:8px;line-height:1.5}
+.fb.ok{background:#EAF3DE;color:#27500A}
+.fb.nok{background:#FCEBEB;color:#791F1F}
+</style>
+
+<div class="wrap">
+<div class="header">
+  <h1>QCM Anapath — Thèmes sélectionnés</h1>
+  <p>Cancer du sein · Tumeurs hépatiques · Cancer colorectal · Cancer du poumon · Tumeur de l'ovaire · Polype &amp; polyposes</p>
+</div>
+
+<div class="toolbar">
+  <button class="tab on" data-t="all">Tous</button>
+  <button class="tab" data-t="sein">Sein</button>
+  <button class="tab" data-t="hepatique">Hépatique</button>
+  <button class="tab" data-t="colorectal">Colorectal</button>
+  <button class="tab" data-t="poumon">Poumon</button>
+  <button class="tab" data-t="ovaire">Ovaire</button>
+  <button class="tab" data-t="polype">Polype</button>
+  <div class="spacer"></div>
+  <button class="btn-reset" onclick="resetAll()">Réinitialiser</button>
+</div>
+
+<div class="stats">
+  <div class="stat"><div class="stat-v" id="sv-total">0</div><div class="stat-l">Questions</div></div>
+  <div class="stat"><div class="stat-v" id="sv-done">0</div><div class="stat-l">Répondues</div></div>
+  <div class="stat"><div class="stat-v" id="sv-score">—</div><div class="stat-l">Score</div></div>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="leg-sq" style="background:#EAF3DE;border:0.5px solid #639922"></div>Bonne réponse</div>
+  <div class="leg"><div class="leg-sq" style="background:#FCEBEB;border:0.5px solid #E24B4A"></div>Mauvaise réponse</div>
+  <div class="leg"><div class="leg-sq" style="background:#FAEEDA;border:0.5px solid #BA7517"></div>Réponse manquée</div>
+</div>
+
+<div id="qlist"></div>
+</div>
+
+<script>
+const QS=[
+  // === AUTRES THÈMES CONSERVÉS ===
+
+
+  // === NOUVEAU BLOC SEIN ===
+  
+  
+  
+  // === BLOC SEIN VÉRIFIÉ ===
+  {id:1,examQ:'Q1',t:'sein',y:'JUIN 2025',tx:"L'adénofibrome mammaire :",tp:'qcm',o:['Est une tumeur fibro-épithéliale','Se présente comme une opacité mal limitée classée ACR5 à la mammographie','Est la tumeur bénigne la plus fréquente du sein','Survient à tout âge','Se présente comme une opacité nodulaire bien limitée à la mammographie'],a:[0,2,4]},
+  {id:2,examQ:'Q2',t:'sein',y:'JUIN 2025',tx:"Les lésions bénignes élémentaires du sein comprennent :",tp:'qcm',o:['La mastite lymphocytaire','L\'adénose micro glandulaire','Les papillomes intra canalaires','Les adénofibromes','Le carcinome mammaire infiltrant de type micropapillaire'],a:[0,1,2,3]},
+  {id:3,examQ:'Q3',t:'sein',y:'JUIN 2025',tx:"L'évaluation du grade de Scarff Bloom Richardson (SBR) est fondée sur 3 critères :",tp:'qcm',o:['Le nombre de mitoses','Les atypies cytonucléaires','La stroma réaction','La différentiation glandulaire','Les emboles vasculaires'],a:[0,2,3]},
+  {id:4,examQ:'Q4',t:'sein',y:'JUIN 2025',tx:"Quel fixateur utilise-t-on pour une biopsie mammaire ACR5 en mammographie ? (QCU)",tp:'qcm',o:['Mélange alcool éther','Bouin','Glutaraldéhyde','Cytospray','Formol'],a:[4]},
+  {id:5,examQ:'Q5',t:'sein',y:'JUIN 2025',tx:"Entourer les cancers du sein HER2 positifs et éligibles à un traitement par la trastuzumab :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[3,4]},
+  {id:6,examQ:'Q4',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Un carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['Est l\'équivalent d\'une néoplasie mammaire intra épithéliale de haut grade','Est gradé selon SBR','Est une prolifération tumorale maligne confinée au canal galactophorique','Ne donne qu\'exceptionnellement des métastases hépatiques','Nécessite le recours à l\'étude immunohistochimique pour établir la classification moléculaire'],a:[1,4]},
+  {id:7,examQ:'Q5',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Parmi ces propositions, lesquelles font partie des facteurs histopronostiques du carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['L\'expression du Ki-67','La présence d\'emboles vasculaires','La présence de maladie de Paget du mamelon','L\'amplification du gène HER2','L\'état des limites chirurgicales'],a:[0,1,3,4]},
+  {id:8,examQ:'Q6',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Rôle du pathologiste dans la prise en charge du cancer du sein :",tp:'qcm',o:['Assure le diagnostic de certitude selon la classification de l\'OMS 2012','Fournit les éléments pronostiques histologiques et moléculaires','Évalue les facteurs de réponse prédictifs aux thérapies ciblées','Participe avec les radiologues, chirurgiens et cancérologues à l\'établissement de la démarche thérapeutique','Précise dans les cas de chirurgie conservatrice l\'étendu et les limites d\'exérèse'],a:[0,1,2,3,4]},
+  {id:9,examQ:'Q7',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"L'évaluation du grade de Scarff Bloom Richardson est fondée sur :",tp:'qcm',o:['La différentiation glandulaire','Les embols vasculaires','Le nombre de mitoses','Les atypies cyto-nucléaires','La stroma réaction'],a:[0,3,4]},
+  {id:10,examQ:'Q8',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Quel fixateur utilise-t-on pour un prélèvement d'une lésion mammaire infraclinique ?",tp:'qcm',o:['Glutaraldéhyde','Cytospray','Formol','Mélange alcool éther','Bouin'],a:[4]},
+  {id:11,examQ:'Q9',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Entourer les cancers du sein HER2 négatifs :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[0,1,2]},
+  {id:12,examQ:'Q10',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Les contre-indications d'un examen extemporané en pathologie tumorale mammaire sont :",tp:'qcm',o:['Un carcinome intracanalaire','Une cicatrice radiaire','Un papillome','Des microcalcifications','La vérification d\'une limite de résection chirurgicale'],a:[0]},
+  {id:13,examQ:'Q11',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"Les tumeurs du sein qui risquent de récidiver sont :",tp:'qcm',o:['Le fibroadénome','Le myoépithéliome','L\'hémangiome','La tumeur phyllode borderline (grade 2)','La fibromatose'],a:[0]},
+  {id:14,examQ:'Q12',t:'sein',y:'JUIN 2024 (RATTRAPAGE)',tx:"La mastopathie fibrokystique du sein comporte quatre des lésions suivantes :",tp:'qcm',o:['La cicatrice radiaire','Le kyste','Le papillome','L\'adénose','L\'hyperplasie épithéliale canalaire'],a:[0,1,2,4]},
+  {id:15,examQ:'Q3',t:'sein',y:'EXCEPTIONNELLE)',tx:"Rôle du pathologiste dans la prise en charge du cancer du sein :",tp:'qcm',o:['Assure le diagnostic de certitude selon la classification de l\'OMS 2019','Participe avec les radiologues, chirurgiens et cancérologues à l\'établissement de la démarche thérapeutique','Précise dans les cas de chirurgie conservatrice l\'étendu et les limites d\'exérèse','Fournit les éléments histopronostiques nécessaires à la prise en charge thérapeutique','Évalue le statut Her2'],a:[0,1,2,3,4]},
+  {id:16,examQ:'Q4',t:'sein',y:'EXCEPTIONNELLE)',tx:"Le carcinome mammaire infiltrant de type non spécifique NST :",tp:'qcm',o:['Est le type histologique le plus fréquent des cancers du sein','Est anciennement appelé carcinome canalaire infiltrant','Peut donner une métastase ganglionnaire axillaire','Peut-être de découverte fortuite mammographique','Peut donner des métastases pulmonaires'],a:[4]},
+  {id:17,examQ:'Q5',t:'sein',y:'EXCEPTIONNELLE)',tx:"L'évaluation du grade de Scarff Bloom Richardson est fondée sur (3 propositions sont justes) :",tp:'qcm',o:['La différentiation glandulaire','Les enroulements périnerveux','Le pourcentage du Ki67','Le nombre de mitoses','Le degré des atypies cyto-nucléaires'],a:[3,4]},
+  {id:18,examQ:'Q6',t:'sein',y:'EXCEPTIONNELLE)',tx:"Entourer les cancers du sein HER2 positifs (2 propositions sont justes) :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[3,4]},
+  {id:19,examQ:'Q7',t:'sein',y:'EXCEPTIONNELLE)',tx:"Quel fixateur utilise-t-on pour un prélèvement tissulaire d'une lésion mammaire ? (QCU)",tp:'qcm',o:['Mélange alcool éther','Cytospray','Formol tamponné neutre à 4%','Bouin','Glutaraldéhyde'],a:[4]},
+  {id:20,examQ:'Q8',t:'sein',y:'EXCEPTIONNELLE)',tx:"À propos du cancer du sein :",tp:'qcm',o:['Le carcinome mammaire lobulaire est la forme histologique la plus fréquente','La mutation du gène BRCA 1 peut être impliquée dans sa genèse','Il peut entrer dans le cadre d\'un cancer familial','Il peut être associé à des lésions de mastopathie fibro-kystique','Il peut comporter des lésions de carcinome in situ'],a:[0]},
+  {id:21,examQ:'Q9',t:'sein',y:'EXCEPTIONNELLE)',tx:"Cochez les facteurs de mauvais pronostic du carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['La taille tumorale élevée','Les marges d\'exérèse chirurgicales saines','L\'extension aux ganglions locorégionaux (N+)','Le grading de SBR III','La présence d\'emboles vasculaires'],a:[0]},
+  {id:22,examQ:'Q10',t:'sein',y:'EXCEPTIONNELLE)',tx:"Le rôle du pathologiste devant une mastopathie :",tp:'qcm',o:['D\'expliquer la concordance histologique avec données radio-cliniques','D\'éliminer une lésion maligne','D\'identifier les lésions à risque de cancérisation','De préciser tous les éléments permettant d\'évaluer le risque relatif de survenue ultérieure d\'un cancer','De poser le diagnostic de carcinome infiltrant sur cytologie mammaire'],a:[0,1,2,3,4]},
+  {id:23,examQ:'Q3',t:'sein',y:'EXCEPTIONNELLE)',tx:"Les facteurs pronostiques du carcinome infiltrant du sein sont :",tp:'qcm',o:['La taille tumorale','Les récepteurs œstro-progestatifs','Le contingent carcinome canalaire in situ de haut grade','L\'envahissement ganglionnaire','Le statut HER2'],a:[0,1,3]},
+  {id:24,examQ:'Q4',t:'sein',y:'EXCEPTIONNELLE)',tx:"Quel est le type histopathologique le plus fréquent des cancers du sein ?",tp:'qcm',o:['Fibrosarcome','Sarcome phyllode','Carcinome mammaire de type non spécifique infiltrant','Leiomyosarcome','Angiosarcome'],a:[4]},
+  {id:25,examQ:'Q5',t:'sein',y:'EXCEPTIONNELLE)',tx:"À propos du cancer du sein :",tp:'qcm',o:['Le carcinome infiltrant du sein de type non spécifique est la forme histologique la plus fréquente','La mutation du gène BRCA peut être impliquée dans sa genèse','Il peut entrer dans le cadre d\'un cancer familial','Il peut être associé à des lésions de mastopathie fibro-kystique','Il peut comporter des lésions de carcinome in situ'],a:[3,4]},
+  {id:26,examQ:'Q6',t:'sein',y:'EXCEPTIONNELLE)',tx:"Lorsque une lésion mammaire est ACR 5 radiologiquement et le pathologiste répond mastopathie fibrokystique sur biopsie (QCU) :",tp:'qcm',o:['Il faudra rebiopsier sous échographie pour obtenir un diagnostic de certitude','Il faut donner un rendez-vous d\'une année à la patiente','Il faut faire une cytologie mammaire','Il faut faire une mastectomie','Il faut préconiser une pyramidectomie'],a:[0,1,2,4]},
+  {id:27,examQ:'Q7',t:'sein',y:'EXCEPTIONNELLE)',tx:"L'examen extemporané en pathologie carcinomateuse mammaire :",tp:'qcm',o:['Est de plus en plus pratiqué à but diagnostic','Permet l\'examen des marges d\'exérèse','Permet la réalisation du ganglion sentinelle','Se fait sur des lésions infra centimétriques','Est réalisé sur un prélèvement tumoral fixé au formol'],a:[1,2]},
+  {id:28,examQ:'Q8',t:'sein',y:'EXCEPTIONNELLE)',tx:"Le Grading de SBR du carcinome infiltrant du sein se base sur :",tp:'qcm',o:['L\'architecture tubulaire','La localisation','Les atypies nucléaires des cellules tumorales','La présence d\'emboles vasculaires','L\'index mitotique'],a:[0,2,4]},
+  {id:29,examQ:'Q9',t:'sein',y:'EXCEPTIONNELLE)',tx:"Entourer les cancers du sein HER2 positif :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[3,4]},
+  {id:30,examQ:'Q10',t:'sein',y:'EXCEPTIONNELLE)',tx:"Rôle du pathologiste dans la prise en charge du cancer du sein :",tp:'qcm',o:['Assure le diagnostic de certitude selon la classification de l\'OMS 2019','Participe avec les radiologues, chirurgiens et cancérologues à l\'établissement de la démarche thérapeutique','Précise dans les cas de chirurgie conservatrice l\'étendu et les limites d\'exérèse','Fournit les éléments histopronostiques nécessaires à la prise en charge thérapeutique','Évalue le statut Her2'],a:[0,1,2,3,4]},
+  {id:31,examQ:'Q11',t:'sein',y:'EXCEPTIONNELLE)',tx:"Quel fixateur utilise-t-on pour un prélèvement d'une lésion mammaire infraclinique ? (QCU)",tp:'qcm',o:['Mélange alcool éther','Bouin','Glutaraldéhyde','Cytospray','Formol tamponné neutre à 4%'],a:[4]},
+  {id:32,examQ:'Q12',t:'sein',y:'EXCEPTIONNELLE)',tx:"Une des propositions suivantes s'applique à la tumeur phyllode de grade I du sein, laquelle ?",tp:'qcm',o:['Dystrophie mammaire','Se cancérise toujours','Double composante épithéliale et conjonctive','Squirrhe','Est une tumeur maligne du sein'],a:[0,3,4]},
+  {id:33,examQ:'Q3',t:'sein',y:'EXCEPTIONNELLE)',tx:"Patiente de 40 ans avec une mammographie : lésion ACR5. Quelle est la conduite à tenir ? (QCU)",tp:'qcm',o:['Tumorectomie d\'emblée','Mastectomie associée à un curage ganglionnaire axillaire d\'emblée','Biopsie écho guidée','Biopsie chirurgicale','Examen extemporané'],a:[0,1,3]},
+  {id:34,examQ:'Q4',t:'sein',y:'EXCEPTIONNELLE)',tx:"Dans le cancer du sein, le rôle du pathologiste est :",tp:'qcm',o:['De poser le diagnostic positif du carcinome infiltrant','De déterminer les facteurs pronostiques','De déterminer les facteurs théranostiques','De collaborer dans la prise en charge multidisciplinaire avec le clinicien-radiologue et thérapeute','De prédire la réponse à la chimiothérapie première sur pièce opératoire'],a:[4]},
+  {id:35,examQ:'Q5',t:'sein',y:'EXCEPTIONNELLE)',tx:"La classification pTNM des cancers mammaires :",tp:'qcm',o:['Est une classification anatomopathologique sur pièce opératoire','Apprécie le nombre des ganglions métastatiques du curage ganglionnaire','Apprécie la taille tumorale sur pièce opératoire','Ne tient pas compte des métastases','Est une stadification clinique pré opératoire'],a:[3,4]},
+  {id:36,examQ:'Q6',t:'sein',y:'EXCEPTIONNELLE)',tx:"Entourer les cancers du sein HER2 positifs :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (2+) amplifié en hybridation in situ','Her 2 (3+)'],a:[3,4]},
+  {id:37,examQ:'Q7',t:'sein',y:'EXCEPTIONNELLE)',tx:"La classification OMS 2019 des carcinomes infiltrants du sein distingue :",tp:'qcm',o:['Carcinome canalaire in situ','Carcinome mammaire de type non spécifique (NST)','Carcinome mammaire de type lobulaire','Carcinome lobulaire in situ','Carcinome métaplasique'],a:[0]},
+  {id:38,examQ:'Q8',t:'sein',y:'EXCEPTIONNELLE)',tx:"Les facteurs histopronostiques du carcinome infiltrant du sein sont :",tp:'qcm',o:['Le statut HER2','Le stroma tumoral','Les récepteurs hormonaux','La taille tumorale','L\'envahissement ganglionnaire'],a:[0]},
+  {id:39,examQ:'Q9',t:'sein',y:'EXCEPTIONNELLE)',tx:"La mastopathie fibrokystique du sein comporte quatre des lésions suivantes :",tp:'qcm',o:['La cicatrice radiaire','L\'hyperplasie épithéliale canalaire','Le kyste','Le papillome','L\'adénose'],a:[0,1,2,4]},
+  {id:40,examQ:'Q10',t:'sein',y:'EXCEPTIONNELLE)',tx:"La cicatrice radiaire :",tp:'qcm',o:['Appartient au spectre des mastopathies fibro-kystiques','Est d\'image stellaire à la mammographie','Est à risque quand elle mesure moins de 7 mm','Est un type de cancer de sein','Pose le problème de diagnostic différentiel à l\'échelle radiologique avec un cancer infiltrant du sein'],a:[0,1,4]},
+  {id:41,examQ:'Q1',t:'sein',y:'MAI 2023',tx:"L'adénofibrome mammaire :",tp:'qcm',o:['Est la tumeur bénigne la plus fréquente du sein','Survient à tout âge','Se présente comme une opacité nodulaire bien limitée à la mammographie','Est une Tumeur germinale','Se présente comme une opacité mal limitée classée ACR5 à la mammographie'],a:[0,2,4]},
+  {id:42,examQ:'Q2',t:'sein',y:'MAI 2023',tx:"La Tumeur phyllode :",tp:'qcm',o:['Est une tumeur fibro-épithéliale','Est toujours bénigne','Survient essentiellement chez l\'adolescente','Peut récidiver','Peut-être maligne'],a:[0,3,4]},
+  {id:43,examQ:'Q3',t:'sein',y:'MAI 2023',tx:"L'Hyperplasie épithéliale mammaire :",tp:'qcm',o:['Fait partie du spectre Mastose scléro-kystique','Définit la Mastopathie proliférante','Peut-être : Légère, modérée, Floride','Elle présente un risque x 2 de cancer lorsqu\'elle est légère','Évolue toujours vers la cancérisation'],a:[0,1,2]},
+  {id:44,examQ:'Q4',t:'sein',y:'MAI 2023',tx:"Les lésions mammaires dont l'exérèse doit être large sont :",tp:'qcm',o:['La tumeur phyllode','L\'adenomyoépithéliome','La fibromatose','L\'adénofibrome','Les kystes'],a:[0,1,2]},
+  {id:45,examQ:'Q15',t:'sein',y:'MAI 2023',tx:"Le carcinome infiltrant de type non spécifique NST :",tp:'qcm',o:['Est le type histologique le plus fréquent des cancers du sein','Est anciennement appelé carcinome canalaire infiltrant','A tendance à réaliser une atteinte des ganglions axillaires','L\'âge moyen de diagnostic est de 20 ans','Peut-être bilatéral'],a:[0,1,2,4]},
+  {id:46,examQ:'Q16',t:'sein',y:'MAI 2023',tx:"L'évaluation du grade de Scarff Bloom Richardson (SBR) est fondée sur :",tp:'qcm',o:['La différentiation glandulaire','Les embols lymphatiques','Le compte mitotique','Les atypies cyto-nucléaires','La stroma réaction'],a:[0,2,4]},
+  {id:47,examQ:'Q17',t:'sein',y:'MAI 2023',tx:"Parmi ces propositions, cochez celles qui vous semblent justes :",tp:'qcm',o:['Le carcinome infiltrant lobulaire est un type spécial','Les sarcomes phyllodes ont tendance à la dissémination ganglionnaire','Dans les carcinomes de type spécial, il existe 3 groupes (bon pronostic, mauvais pronostic et les formes particulières)','Tout compte rendu doit mentionner le pourcentage de carcinome in situ associé au contingent infiltrant','Le sein peut être un site de métastase d\'origine extra-mammaire'],a:[0]},
+  {id:48,examQ:'Q18',t:'sein',y:'MAI 2023',tx:"Quel fixateur utilise-t-on pour un prélèvement d'une lésion mammaire infraclinique ?",tp:'qcm',o:['Glutaraldéhyde','Cytospray','Formol','Mélange alcool éther','Bouin'],a:[4]},
+  {id:49,examQ:'Q19',t:'sein',y:'MAI 2023',tx:"Entourer les cancers du sein HER2 positif :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[3,4]},
+  {id:50,examQ:'Q20',t:'sein',y:'MAI 2023',tx:"La mastopathie fibrokystique du sein comporte quatre des lésions suivantes :",tp:'qcm',o:['La cicatrice radiaire','Le kyste','Le papillome','L\'adénose','L\'hyperplasie épithéliale canalaire'],a:[0,1,2,4]},
+  {id:51,examQ:'Q2',t:'sein',y:'JUIN 2023',tx:"L'adénofibrome mammaire :",tp:'qcm',o:['Est la tumeur bénigne la plus fréquente du sein','Survient à tout âge','Se présente comme une opacité nodulaire bien limitée à la mammographie','Est une Tumeur germinale','Se présente comme une opacité mal limitée classée ACR5 à la mammographie'],a:[0,2,4]},
+  {id:52,examQ:'Q18',t:'sein',y:'JUIN 2023',tx:"Le lymphome non hodgkinien mammaire :",tp:'qcm',o:['Peut être bilatéral','Est caractérisé par une évolution lente','Est souvent bien limité radiologiquement','Pose le problème de diagnostic différentiel avec un carcinome','Son traitement se base sur la chimiothérapie'],a:[0]},
+  {id:53,examQ:'Q19',t:'sein',y:'JUIN 2023',tx:"Le contenu minimal du compte rendu d'une pièce de mastectomie pour cancer infiltrant mammaire comporte :",tp:'qcm',o:['Siège et nombre des tumeurs','Extension des lésions tumorales en mm','Type histologique de la tumeur','Grade histologique SBR','État des berges de la pièce'],a:[0]},
+  {id:54,examQ:'Q20',t:'sein',y:'JUIN 2023',tx:"La mastopathie fibrokystique du sein comporte les lésions suivantes :",tp:'qcm',o:['La cicatrice radiaire','Le kyste','L\'adénose simple','L\'hyperplasie épithéliale','Le papillome'],a:[0,1,2,4]},
+  {id:55,examQ:'Q23',t:'sein',y:'JUIN 2023',tx:"L'évaluation du grade de Scarff Bloom Richardson (SBR) est fondée sur 3 critères :",tp:'qcm',o:['La différentiation glandulaire','Les embols vasculaires','Le nombre de mitoses','Les atypies cyto-nucléaires','La stroma réaction'],a:[0,2,3]},
+  {id:56,examQ:'Q24',t:'sein',y:'JUIN 2023',tx:"Quel fixateur utilise-t-on pour un prélèvement d'une lésion mammaire infraclinique ? (1 réponse est juste)",tp:'qcm',o:['Glutaraldéhyde','Cytospray','Formol','Mélange alcool éther','Bouin'],a:[4]},
+  {id:57,examQ:'Q25',t:'sein',y:'JUIN 2023',tx:"Entourer les cancers du sein HER2 positifs et éligibles à un traitement par la trastuzumab :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[3,4]},
+  {id:58,examQ:'Q10',t:'sein',y:'JANVIER 2022',tx:"La Tumeur phyllode :",tp:'qcm',o:['Est une tumeur fibro-épithéliale','Est toujours bénigne','Survient essentiellement chez l\'enfant','Peut récidiver','Peut-être maligne'],a:[0,3,4]},
+  {id:59,examQ:'Q11',t:'sein',y:'JANVIER 2022',tx:"Les lésions mammaires dont l'exérèse doit être large sont :",tp:'qcm',o:['Les Kystes','La Tumeur phyllode','L\'Adenomyoépithéliome','La Fibromatose','L\'Adénofibrome'],a:[0,1,2]},
+  {id:60,examQ:'Q12',t:'sein',y:'JANVIER 2022',tx:"La cicatrice radiaire :",tp:'qcm',o:['Est appelée centre prolifératif d\'Aschoff','Pose le problème de diagnostic différentiel radiologiquement avec un carcinome infiltrant','Appartient au spectre des mastopathies fibro-kystiques','Est d\'image stellaire à la mammographie','Nécessite une vérification histologique obligatoire si elle montre une image stellaire radiologique'],a:[0,1,4]},
+  {id:61,examQ:'Q13',t:'sein',y:'JANVIER 2022',tx:"Parmi les carcinomes infiltrants du sein, on distingue :",tp:'qcm',o:['Le Carcinome de type non spécifique (NST)','Le Carcinome tubuleux infiltrant','Le Carcinome lobulaire infiltrant','Le Carcinome mucineux','Le carcinome intracanalaire de haut grade'],a:[0]},
+  {id:62,examQ:'Q14',t:'sein',y:'JANVIER 2022',tx:"La maladie de Paget du mamelon :",tp:'qcm',o:['Est une tumeur bénigne du mamelon','Est de diagnostic positif histopathologique','Est une colonisation de l\'épiderme par des cellules malignes de nature glandulaire','Doit faire rechercher un carcinome sous-jacent « in situ » ou infiltrant','Se manifeste cliniquement par une lésion exématiforme du mamelon'],a:[0]},
+  {id:63,examQ:'Q15',t:'sein',y:'JANVIER 2022',tx:"Parmi ces propositions, lesquelles font partie des facteurs histopronostiques du carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['Le statut des récepteurs à l\'œstrogène et à la progestérone','La présence d\'emboles vasculaires','La présence de maladie de Paget du mamelon','Le statut HER2','L\'état des limites chirurgicales'],a:[0,1,3,4]},
+  {id:64,examQ:'Q16',t:'sein',y:'JANVIER 2022',tx:"Entourer les cancers du sein HER2 négatifs :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[0,1,2]},
+  {id:65,examQ:'Q6',t:'sein',y:'JANVIER 2021',tx:"Rôle du pathologiste dans la prise en charge du cancer du sein :",tp:'qcm',o:['Assure le diagnostic de certitude selon la classification de l\'OMS 2019','Fournit les éléments pronostiques histologiques et moléculaires','Évalue les facteurs de réponse prédictifs aux thérapies ciblées','Participe avec les radiologues, chirurgiens et cancérologues à l\'établissement de la démarche thérapeutique','Précise dans les cas de chirurgie conservatrice l\'étendu et les limites d\'exérèse'],a:[0,1,2,3,4]},
+  {id:66,examQ:'Q7',t:'sein',y:'JANVIER 2021',tx:"Le carcinome mammaire infiltrant de type non spécifique NST :",tp:'qcm',o:['Est le type histologique le plus fréquent des cancers du sein','Est anciennement appelé carcinome canalaire infiltrant','A tendance à réaliser une atteinte des ganglions axillaires','L\'âge moyen de diagnostic est de 56 ans','Peut-être bilatéral'],a:[0,1,2,4]},
+  {id:67,examQ:'Q8',t:'sein',y:'JANVIER 2021',tx:"L'évaluation du grade de Scarff Bloom Richardson est fondée sur :",tp:'qcm',o:['La différentiation glandulaire','La stroma réaction','Les embols vasculaires','Le nombre de mitoses','Les atypies cyto-nucléaires'],a:[0,3,4]},
+  {id:68,examQ:'Q9',t:'sein',y:'JANVIER 2021',tx:"L'examen extemporané en pathologie mammaire est contre indiqué devant :",tp:'qcm',o:['Un prélèvement infracentimétrique','Une cicatrice radiaire','Une lésion papillaire intra-canalaire','Une vérification d\'une limite de résection chirurgicale','Une lésion d\'hyperplasie épithéliale'],a:[0]},
+  {id:69,examQ:'Q10',t:'sein',y:'JANVIER 2021',tx:"Entourer les cancers du sein HER2 négatifs :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[0,1,2]},
+  {id:70,examQ:'Q11',t:'sein',y:'JANVIER 2021',tx:"La mastopathie fibrokystique du sein comporte quatre des lésions suivantes :",tp:'qcm',o:['La cicatrice radiaire','Le kyste','Le papillome','L\'adénose','L\'hyperplasie épithéliale canalaire'],a:[0,1,2,4]},
+  {id:71,examQ:'Q22',t:'sein',y:'JANVIER 2021',tx:"Les circonstances de découverte d'une lésion bénigne du sein sont :",tp:'qcm',o:['Un nodule palpable','Un écoulement mamelonaire','Une mastodynie','Une lésion mammographique classée ACR5','Une opacité radiologique'],a:[0,1,2,4]},
+  {id:72,examQ:'Q23',t:'sein',y:'JANVIER 2021',tx:"Parmi les tumeurs fibro-épithéliales bénignes du sein on note :",tp:'qcm',o:['La mastose sclérokystique (MSK)','Les papillomes intracanalaires et lésions apparentées','Les adénofibromes','Le carcinome lobulaire infiltrant','La tumeur phyllode'],a:[0]},
+  {id:73,examQ:'Q24',t:'sein',y:'JANVIER 2021',tx:"L'examen extemporané est contre indiqué devant :",tp:'qcm',o:['Un prélèvement mammaire infra centimétrique','Une cicatrice radiaire','Une lésion papillaire intra-canalaire','Une vérification d\'une limite de résection chirurgicale','Une lésion d\'hyperplasie épithéliale'],a:[0]},
+  {id:74,examQ:'Q25',t:'sein',y:'JANVIER 2021',tx:"Les facteurs péjoratifs d'une tumeur phyllode sont :",tp:'qcm',o:['La bonne limitation','Les atypies cytonucléaires marquées','Un index mitotique élevé','La présence d\'un contingent hétérologue','La disparition des structures épithéliales'],a:[0,3,4]},
+  {id:75,examQ:'Q5',t:'sein',y:'JANVIER 2020',tx:"Rôle du pathologiste dans la prise en charge du cancer du sein :",tp:'qcm',o:['Assure le diagnostic de certitude selon la classification de l\'OMS 2019','Fournit les éléments pronostiques histologiques et moléculaires','Évalue la surexpression ou non de l\'HER2','Participe avec les radiologues, chirurgiens et cancérologues à l\'établissement de la démarche thérapeutique','Précise dans les cas de chirurgie conservatrice l\'étendu et les limites d\'exérèse'],a:[0,1,2,3,4]},
+  {id:76,examQ:'Q6',t:'sein',y:'JANVIER 2020',tx:"La classification OMS 2019 des carcinomes infiltrants du sein distingue :",tp:'qcm',o:['Carcinome de type non spécifique (NST)','Carcinome de type lobulaire','Néoplasie mammaire intra épithéliale','Carcinome métaplasique','Carcinome tubuleux'],a:[0]},
+  {id:77,examQ:'Q7',t:'sein',y:'JANVIER 2020',tx:"Le carcinome infiltrant de type non spécifique NST :",tp:'qcm',o:['Est le type histologique le plus fréquent des cancers du sein','Est anciennement appelé carcinome canalaire infiltrant','A tendance à réaliser une atteinte des ganglions axillaires','L\'âge moyen de diagnostic est de 20 ans','Peut être bilatéral'],a:[0,1,2,4]},
+  {id:78,examQ:'Q8',t:'sein',y:'JANVIER 2020',tx:"L'évaluation du grade de Scarff Bloom Richardson est fondée sur :",tp:'qcm',o:['La différentiation glandulaire','Les embols vasculaires','Le pourcentage du Ki67','Le nombre de mitoses','Les atypies cyto-nucléaires'],a:[0,3,4]},
+  {id:79,examQ:'Q9',t:'sein',y:'JANVIER 2020',tx:"Parmi ces propositions, lesquelles font partie des facteurs histopronostiques du carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['L\'âge de la patiente','La présence d\'emboles vasculaires','La présence de maladie de Paget du mamelon','L\'amplification du gène HER2','L\'état des limites chirurgicales'],a:[0,1,3,4]},
+  {id:80,examQ:'Q10',t:'sein',y:'JANVIER 2020',tx:"Quel fixateur utilise-t-on pour un prélèvement d'une lésion mammaire infraclinique ?",tp:'qcm',o:['Mélange alcool éther','Bouin','Glutaraldéhyde','Cytospray','Formol tamponné neutre à 4%'],a:[4]},
+  {id:81,examQ:'Q11',t:'sein',y:'JANVIER 2020',tx:"Entourer les cancers du sein HER2 négatifs :",tp:'qcm',o:['Her 2 (0)','Her 2 (1+)','Her 2 (2+) non amplifié en hybridation in situ','Her 2 (3+)','Her 2 (2+) amplifié en hybridation in situ'],a:[0,1,2]},
+  {id:82,examQ:'Q12',t:'sein',y:'JANVIER 2020',tx:"L'angiosarcome mammaire est :",tp:'qcm',o:['Une tumeur bénigne du sein','Une extension d\'un carcinome lobulaire in situ','Une extension d\'un carcinome mammaire de type non spécifique infiltrant','La tumeur conjonctive maligne du sein la plus fréquente','Peut compliquer une radiothérapie'],a:[0]},
+  {id:83,examQ:'Q13',t:'sein',y:'JANVIER 2020',tx:"La mastopathie fibrokystique du sein comporte quatre des lésions suivantes :",tp:'qcm',o:['La cicatrice radiaire','Le kyste','Le papillome','L\'adénose','L\'hyperplasie épithéliale canalaire'],a:[0,1,2,4]},
+  {id:84,examQ:'Q14',t:'sein',y:'JANVIER 2020',tx:"Un carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['Est l\'équivalent d\'une néoplasie mammaire intra épithéliale de haut grade','Est gradé selon SBR','Est une prolifération tumorale maligne confinée au canal galactophorique','Ne donne qu\'exceptionnellement des métastases hépatiques','Nécessite le recours à l\'étude immunohistochimique pour établir la classification moléculaire'],a:[1,4]},
+  {id:85,examQ:'Q1',t:'sein',y:'JANVIER 2019',tx:"L'examen extemporané en pathologie tumorale mammaire :",tp:'qcm',o:['Est une consultation anatomopathologique préopératoire','Est obligatoire devant chaque cancer du sein','Est un examen rapide et oriente l\'acte chirurgical','Permet de donner un diagnostic définitif','Est un examen de coupes en congélation'],a:[0,2,4]},
+  {id:86,examQ:'Q2',t:'sein',y:'JANVIER 2019',tx:"Quel est le type histopathologique le plus fréquent des sarcomes du sein ?",tp:'qcm',o:['Leiomyosarcome','Fibrosarcome','Angiosarcome','Rhabdomyosarcome','Sarcome phyllode'],a:[0,1,2,3]},
+  {id:87,examQ:'Q3',t:'sein',y:'JANVIER 2019',tx:"Le grading du carcinome in situ mammaire se base sur deux principaux critères histopathologiques. Lesquels :",tp:'qcm',o:['La localisation','L\'architecture','Les atypies cytonucléaires','Le stroma','La présence d\'emboles vasculaires'],a:[0,1,3]},
+  {id:88,examQ:'Q4',t:'sein',y:'JANVIER 2019',tx:"La mastopathie fibrokystique du sein présente une lésion déterminante. Laquelle ?",tp:'qcm',o:['La cicatrice radiaire','L\'hyperplasie épithéliale canalaire','Le kyste','Le papillome','L\'adénose'],a:[4]},
+  {id:89,examQ:'Q5',t:'sein',y:'JANVIER 2019',tx:"Le grading de SBR du carcinome infiltrant du sein se base sur :",tp:'qcm',o:['La localisation','L\'architecture tubulaire','Les atypies nucléaires des cellules tumorales','L\'index mitotique','La présence d\'emboles vasculaires'],a:[1,2,3]},
+  {id:90,examQ:'Q6',t:'sein',y:'JANVIER 2019',tx:"Les facteurs pronostiques biologiques du carcinome infiltrant du sein sont :",tp:'qcm',o:['Le stroma tumoral','Les récepteurs hormonaux','Le contingent in situ extensif','L\'envahissement ganglionnaire','Le statut HER2'],a:[1,3,4]},
+  {id:91,examQ:'Q7',t:'sein',y:'JANVIER 2019',tx:"L'adénofibrome mammaire :",tp:'qcm',o:['Est la tumeur bénigne la plus fréquente','Survient à tout âge','Se présente comme une opacité nodulaire bien limitée à la mammographie','Est une Tumeur fibro-épithéliale','Se présente comme une opacité mal limitée classée ACR5 à la mammographie'],a:[0,2,4]},
+  {id:92,examQ:'Q8',t:'sein',y:'JANVIER 2019',tx:"Concernant le cancer du sein :",tp:'qcm',o:['Est le premier cancer de la femme occidentale','Est dominé par les carcinomes infiltrants de type non spécifique','Les carcinomes mammaires sont moins fréquents que les lymphomes mammaires','Souvent diagnostiqué à un stade précoce','Sa prise en charge nécessite une concertation pluridisciplinaire'],a:[0]},
+  {id:93,examQ:'Q9',t:'sein',y:'JANVIER 2019',tx:"Une lésion mammographique ACR5 montre à la biopsie un parenchyme mammaire dystrophique, la conduite à tenir est de :",tp:'qcm',o:['Rebiopsier pour obtenir un diagnostic de certitude','Une concertation radio-pathologique est nécessaire','Abstention thérapeutique','Le pathologiste doit expliquer la lésion radiologique','Rassurer la patiente sur la bénignité lésionnelle'],a:[0]},
+  {id:94,examQ:'Q26',t:'sein',y:'JUIN 2019',tx:"Un carcinome mammaire infiltrant de type non spécifique :",tp:'qcm',o:['Est l\'équivalent d\'une néoplasie mammaire intra épithéliale de haut grade','Est gradé selon SBR','Est une prolifération tumorale maligne confinée au canal galactophorique','Ne donne qu\'exceptionnellement des métastases hépatiques','Nécessite le recours à l\'étude immunohistochimique pour établir la classification moléculaire'],a:[1,4]},
+  {id:95,examQ:'Q49',t:'sein',y:'JUIN 2019',tx:"Le rôle du pathologiste dans le carcinome mammaire infiltrant :",tp:'qcm',o:['Prend en charge les complications hématologiques de la chimiothérapie','Participe au diagnostic précoce','Confirme histologiquement la récidive mammaire','Permet de préciser l\'étendu et les limites d\'exérèse','Fournit les éléments histopronostiques et moléculaires nécessaires à la prise en charge thérapeutique'],a:[0,1,2,3,4]},
+  {id:96,examQ:'Q50',t:'sein',y:'JUIN 2019',tx:"L'examen extemporané en pathologie tumorale mammaire :",tp:'qcm',o:['Est une consultation anatomopathologique per opératoire','Nécessite une fixation rapide au formol au bloc opératoire','Permet de donner un diagnostic définitif','Est à éviter pour les lésions < 1 cm','Est indiqué en cas de cicatrice radiaire'],a:[0]},
+
+  {id:9,t:'colorectal',y:'2025 Normal',tx:"Les critères de risque de malignité devant un adénome colorectal englobent :",tp:'qcm',o:['La composante villeuse prédominante','Le sexe masculin','Le siège rectal','La durée d\'évolution longue','La taille > 1cm'],a:[0,1,4]},
+  {id:10,t:'colorectal',y:'2025 Normal',tx:"Une lésion polypoïde colorectale :",tp:'qcm',o:['Est une lésion macroscopique qui fait saillie dans la lumière colorectale','Peut être de nature inflammatoire','Est toujours de nature adénomateuse','Doit être vérifiée histologiquement','Peut correspondre à de nombreuses entités anatomo-cliniques différentes'],a:[0,1,3,4]},
+  {id:70,t:'ovaire',y:'2019 Juin',tx:"Parmi les tumeurs épithéliales malignes primitives de l'ovaire, quelle est la tumeur la plus fréquente ?",tp:'qcu',o:['Séreuses','Mucineuses','Endométrioïdes','À cellules claires','À cellules transitionnelles'],a:[0]},
+
+  
+  
+  {id:201,t:'polype',y:'2025 Juin',tx:"Les critères de risque de malignité devant un adénome colorectal englobent :",tp:'qcm',o:['La composante villeuse prédominante','Le sexe masculin','Le siège rectal','La durée d’évolution longue','La taille > 1cm'],a:[0,1,4]},
+  {id:202,t:'polype',y:'2025 Juin',tx:"Une lésion polypoide colorectale :",tp:'qcm',o:['Est une lésion macroscopique qui fait saillie dans la lumière colorectale','Peut être de nature inflammatoire','Est toujours de nature adénomateuse','Doit être vérifiée histologiquement','Peut correspondre à de nombreuses entités anatomo-cliniques différentes'],a:[0,1,3,4]},
+  {id:203,t:'polype',y:'2025 Juin',tx:"Entourer les facteurs incriminés dans la genèse d’un adénome colorectal :",tp:'qcm',o:['La consommation excessive de viande rouge','La consommation excessive de légumes et de fruits','L’intoxication alcoolo-tabagique','La carence en folates','La prise régulière d’aspirine'],a:[0,2,3]},
+  {id:204,t:'polype',y:'2025 Juin',tx:"L’adénome tubuleux :",tp:'qcm',o:['Est le type le plus fréquent 80%','Est fait de 75% des structures glandulaires','Comporte des Digitations munis d’un axe conjonctif','Peut-être en dysplasie de haut grade','Risque d’évoluer vers un adénocarcinome'],a:[0,1,3,4]},
+  {id:205,t:'polype',y:'2025 Juin',tx:"Le polype hyperplasique est :",tp:'qcm',o:['Se voit toujours chez l’enfant','Siège essentiellement au niveau du rectum','Correspond à une élevure lenticulaire macroscopique','Évolue vers un carcinome dans 90% des cas','De pronostic défavorable'],a:[1,2]},
+
+  {id:206,t:'polype',y:'2024 Rattrapage',tx:"La polypose adénomateuse familiale (PAF) :",tp:'qcm',o:['Est une maladie héréditaire','Se caractérise par une instabilité des microsatellites','Prédispose aux cancers colorectaux','Est due à une mutation du gène APC','Evolue vers une cancérisation inéluctable'],a:[0,2,3,4]},
+  {id:207,t:'polype',y:'2024 Rattrapage',tx:"L’adénome colorectal :",tp:'qcm',o:['Peut-être pédiculé ou sessile','Peut-être multiple','Sa résection par colonoscopie permet d’éviter l’évolution vers un carcinome infiltrant','Le type tubuleux ne cancérise jamais','Peut-être en dysplasie de haut ou de bas grade'],a:[0,1,2,4]},
+  {id:208,t:'polype',y:'2024 Rattrapage',tx:"Le polype colorectal :",tp:'qcm',o:['Est un terme macroscopique','Correspond à une entité anatomoclinique bien précise','Est une lésion en relief sur la muqueuse digestive','Possède toujours un risque d’évolution vers un cancer','Seul l’examen histologique permet d’en préciser le type'],a:[0,2,4]},
+
+  {id:209,t:'polype',y:'2024 1ère Excep',tx:"L’adénome colorectal :",tp:'qcm',o:['Peut-être pédiculé ou sessile','Siège préférentiellement au niveau du rectosigmoide','Peut-être multiple','Le type tubuleux ne cancérise jamais','Peut-être en dysplasie de haut ou de bas grade'],a:[0,1,2,4]},
+  {id:210,t:'polype',y:'2024 1ère Excep',tx:"Les critères de risque de malignité devant un adénome colorectal englobent :",tp:'qcm',o:['L’âge jeune','Le Sexe masculin','Le siège colique','La composante villeuse','La taille > 1cm'],a:[1,3,4]},
+  {id:211,t:'polype',y:'2024 1ère Excep',tx:"Deux éléments caractérisent la dysplasie de haut grade de l’adénome tubulo-villeux rectal :",tp:'qcm',o:['La persistence de mucosécrétion','Les atypies cellulaires peu marquées','La perte de mucosécrétion','Les atypies cellulaires marquées','L’infiltration du chorion sous-jacent'],a:[2,3]},
+
+  {id:212,t:'polype',y:'2024 2ème Excep',tx:"Entourer les facteurs incriminés dans la genèse d’un adénome colorectal :",tp:'qcm',o:['La consommation excessive de viande rouge','La consommation excessive de légumes et de fruits','L’intoxication alcoolo-tabagique','La carence en folates','La prise régulière d’aspirine'],a:[0,2,3]},
+
+  {id:213,t:'polype',y:'2024 3ème Excep',tx:"Une lésion polypoïde rectale :",tp:'qcm',o:['Doit être vérifiée histologiquement','Peut être de nature inflammatoire','Est toujours un adénome colorectal','Peut correspondre à de nombreuses entités anatomo-cliniques différentes','Est toujours maligne'],a:[0,1,3]},
+  {id:214,t:'polype',y:'2024 3ème Excep',tx:"Les critères de risque de malignité devant un adénome colorectal englobent :",tp:'qcm',o:['L’âge > 60 ans','L’infiltrat inflammatoire minime du chorion','La composante villeuse','La taille > 1cm','Le siège rectal'],a:[2,3,4]},
+
+  {id:215,t:'polype',y:'2023 Mai',tx:"Vous recevez au service d’anatomie pathologique une pièce de polypectomie. Le diagnostic histopathologique est un adénome tubulo-villeux cancérisé. Quels sont les éléments à signaler dans le compte rendu anatomopathologique :",tp:'qcm',o:['Grade de différenciation de l’adénocarcinome','La présence d’emboles vasculaires ou lymphatiques','La présence de Budding','L’envahissement de la sous muqueuse (en mm)','Marge de résection chirurgicale (en mm)'],a:[0,1,2,3,4]},
+  {id:216,t:'polype',y:'2023 Mai',tx:"Le risque de cancérisation d’un adénome tubulo-villeux est accru quand :",tp:'qcm',o:['L’âge jeune','Il survient chez la femme','Il est de siège rectal','Il est infracentimétrique','Il survient chez l’homme'],a:[2,4]},
+
+  {id:217,t:'polype',y:'2023 Juin',tx:"Les critères de risque de malignité devant un adénome colorectal englobent :",tp:'qcm',o:['La composante villeuse prédominante','Le sexe masculin','Le siège rectal','La durée d’évolution longue','La taille > 1cm'],a:[0,1,4]},
+  {id:218,t:'polype',y:'2023 Juin',tx:"Une lésion polypoide colorectale :",tp:'qcm',o:['Est une lésion macroscopique qui fait saillie dans la lumière colorectale','Peut être de nature inflammatoire','Est toujours de nature adénomateuse','Doit être vérifiée histologiquement','Peut correspondre à de nombreuses entités anatomo-cliniques différentes'],a:[0,1,3,4]},
+  {id:219,t:'polype',y:'2023 Juin',tx:"Entourer les facteurs incriminés dans la genèse d’un adénome colorectal :",tp:'qcm',o:['La consommation excessive de viande rouge','La consommation excessive de légumes et de fruits','L’intoxication alcoolo-tabagique','La carence en folates','La prise régulière d’aspirine'],a:[0,2,3]},
+  {id:220,t:'polype',y:'2023 Juin',tx:"L’adénome tubuleux :",tp:'qcm',o:['Est le type le plus fréquent 80%','Est fait de 75% des structures glandulaires','Comporte des Digitations munis d’un axe conjonctif','Peut-être en dysplasie de haut grade','Risque d’évoluer vers un adénocarcinome'],a:[0,1,3,4]},
+  {id:221,t:'polype',y:'2023 Juin',tx:"La polypose adénomateuse familiale :",tp:'qcm',o:['Est une atteinte majeure ou mineure selon le nombre de polypes','Se caractérise par la mutation du gène APC','Peut comporter des lésions de dysplasie de haut grade','Nécessite une enquête génétique familiale','Le risque de cancer est minime'],a:[0,1,2,3]},
+
+  {id:222,t:'polype',y:'2022 Jan',tx:"Les critères de risque de malignité devant un adénome colorectal englobent :",tp:'qcm',o:['La composante villeuse prédominante','Le Sexe masculin','Le siège rectal','La durée d’évolution longue','La taille > 1cm'],a:[0,1,4]},
+  {id:223,t:'polype',y:'2022 Jan',tx:"Que signaler dans le compte rendu anatomopathologique d’un adénome cancérisé :",tp:'qcm',o:['Le Grade du cancer développé sur polype (Différenciation)','La présence ou non d’emboles vasculaires ou lymphatiques','La présence ou non du Front d’invasion (Budding)','Envahissement de la sous muqueuse (en mm)','La distance de la tumeur par rapport à la marge chirurgicale de sécurité (en mm)'],a:[0,1,2,3,4]},
+
+  {id:224,t:'polype',y:'2021 Jan',tx:"La polypose adénomateuse familiale (PAF) :",tp:'qcm',o:['Se caractérise par une instabilité des microsatellites','Prédispose aux cancers colorectaux','Est due à une mutation du gène APC','Evolue vers une cancérisation inéluctable','Peut être traitée par une colectomie large'],a:[1,2,3,4]},
+
+  {id:225,t:'polype',y:'2020 Jan',tx:"Une lésion polypoide colorectale :",tp:'qcm',o:['Peut être de nature inflammatoire','Est toujours de nature adénomateuse','Doit être vérifiée histologiquement','Peut correspondre à de nombreuses entités anatomo-cliniques différentes','Est toujours bénigne'],a:[0,2,3]},
+
+  {id:226,t:'polype',y:'2019 Jan',tx:"Quelles sont les lésions précancéreuses du cancer colorectal :",tp:'qcm',o:['La maladie de Crohn','La rectocolite ulcéro-hémorragique','L’adénome tubulo-villeux en dysplasie de haut grade','La colite infectieuse','La colite iatrogène'],a:[0,1,2]},
+  {id:227,t:'polype',y:'2019 Jan',tx:"Quels sont les facteurs histopronostiques du cancer rectal :",tp:'qcm',o:['La taille tumorale','L’état général du patient','La limite circonférentielle','Les emboles vasculaires','L’engainement péri-nerveux'],a:[2,3,4]},
+  {id:228,t:'polype',y:'2019 Jan',tx:"Le polype adénomateux :",tp:'qcm',o:['Est une lésion épithéliale de nature inflammatoire','Est susceptible d’évoluer vers un adénocarcinome','Peut présenter des anomalies architecturales et cytologiques à des degrés variables','Sa prévalence diminue avec l’âge','La consommation excessive de viande rouge est un facteur protecteur'],a:[1,2]},
+  {id:229,t:'polype',y:'2019 Jan',tx:"L’adénome villeux :",tp:'qcm',o:['Est le type histologique le plus fréquent des adénomes','Est fait de Digitations munis d’un axe conjonctif','Est toujours en dysplasie de haut grade','Le Risque de cancérisation est rare','Comporte 75% des structures glandulaires'],a:[1]},
+
+  {id:230,t:'polype',y:'2019 Juin',tx:"Une lésion polypoide colorectale :",tp:'qcm',o:['Peut être de nature inflammatoire','Est toujours de nature adénomateuse','Doit être vérifiée histologiquement','Peut correspondre à de nombreuses entités anatomo-cliniques différentes','Est toujours bénigne'],a:[0,2,3]},
+  {id:231,t:'polype',y:'2019 Juin',tx:"Entourer les facteurs incriminés dans la genèse d’un adénome colorectal :",tp:'qcm',o:['La consommation excessive de viande rouge','La consommation excessive de légumes et de fruits','L’intoxication alcoolo-tabagique','La carence en folates','La prise régulière d’aspirine'],a:[0,2,3]},
+  {id:232,t:'polype',y:'2019 Juin',tx:"L’adénome tubuleux :",tp:'qcm',o:['Est le type le plus fréquent 80%','Est fait de 75% des structures glandulaires','Comporte des Digitations munis d’un axe conjonctif','Sa surface reproduit les villosités intestinales','Risque de cancériser'],a:[0,1,4]},
+  {id:233,t:'polype',y:'2019 Juin',tx:"Le polype hyperplasique est :",tp:'qcm',o:['Se voit toujours chez l’enfant','Siège essentiellement au niveau du rectum','Correspond à une élevure lenticulaire macroscopique','Presque toujours unique','De pronostic défavorable'],a:[1,2,3]},
+  {id:234,t:'polype',y:'2019 Juin',tx:"La polypose adénomateuse familiale :",tp:'qcm',o:['Est une atteinte majeure ou mineure selon le nombre de polypes','Se caractérise par la mutation du gène APC','Peut comporter des lésions de dysplasie de haut grade','Nécessite une enquête génétique familiale','Le risque de cancer est minime'],a:[0,1,2,3]},
+
+  // === NOUVELLES QUESTIONS TUMEURS HÉPATIQUES AJOUTÉES ===
+
+
+  // Session Juin 2025
+  {id:101, t:'hepatique', y:'2025 Juin', tx:"À propos des tumeurs hépatiques :", tp:'qcm', o:["Elles sont définies uniquement comme l'ensemble des proliférations tumorales se développant au dépend des constituants du tissu hépatique", "Elles peuvent être secondaires", "Sont souvent associées à une cirrhose hépatique si elles sont primitives", "Peuvent être au dépend des éléments vasculaires du foie", "Peuvent être au dépend des voies biliaires intra-hépatiques"], a:[1,2,3,4]},
+  {id:102, t:'hepatique', y:'2025 Juin', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:103, t:'hepatique', y:'2025 Juin', tx:"L'hépatoblastome :", tp:'qcm', o:["Est une tumeur embryonnaire de l'enfant", "Se caractérise biologiquement par une augmentation sérique de l'AFP", "Se révèle par une hépatomégalie tumorale", "L'étude anatomopathologique de la biopsie hépatique permet le diagnostic", "Son traitement est basé sur la chirurgie avec possibilité de chimiothérapie"], a:[0,1,2,3,4]},
+  {id:104, t:'hepatique', y:'2025 Juin', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est le plus souvent multinodulaire", "Est rare", "Peut-être révélatrice d'un cancer", "Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive"], a:[0,2,3,4]},
+  
+  // Session Juin 2024 (Rattrapage)
+  {id:105, t:'hepatique', y:'2024 Rattrapage', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire pédiatriques"], a:[0,1,3,4]},
+  {id:106, t:'hepatique', y:'2024 Rattrapage', tx:"À propos des tumeurs hépatiques :", tp:'qcm', o:["La découverte peut être lors du suivi d'une cirrhose", "La découverte peut être lors du suivi d'un cancer mammaire", "L'imagerie permet de préciser la taille, le siège, la vascularisation et l'envahissement des structures adjacentes", "Sont toujours primitives", "Sont toujours de nature épitheliale"], a:[0,1,2]},
+  {id:107, t:'hepatique', y:'2024 Rattrapage', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "Est le plus souvent multinodulaire", "Est rare", "Peut-être révélatrice d'un cancer"], a:[0,1,2,4]},
+  
+  // Session Septembre 2024 (1ère Exceptionnelle)
+  {id:108, t:'hepatique', y:'2024 1er Excep', tx:"Parmi les facteurs de risque du carcinome hépatocellulaire hépatique, on retrouve :", tp:'qcm', o:["Un âge inférieur à 50 ans", "La cirrhose récente", "Un patient infecté au virus de l'hépatite B", "La cirrhose macronodulaire", "Le sexe masculin"], a:[2,3,4]},
+  {id:109, t:'hepatique', y:'2024 1er Excep', tx:"L'hépatoblastome :", tp:'qcm', o:["Atteint surtout l'enfant", "Se caractérise par une augmentation sérique de la yGT (gamma GT)", "Survient sur un foie sain", "L'imagerie est suffisante pour porter le diagnostic", "Se révèle par une hépatomégalie tumorale"], a:[0,2,4]},
+  {id:110, t:'hepatique', y:'2024 1er Excep', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:111, t:'hepatique', y:'2024 1er Excep', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "L'immunohistochimie à elle seule peut toujours déterminer le primitif avec précision", "Peut-être révélatrice d'un cancer", "Est le plus souvent multinodulaire"], a:[0,1,3,4]},
+  
+  // Session 2024 (2ème Exceptionnelle)
+  {id:112, t:'hepatique', y:'2024 2e Excep', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:113, t:'hepatique', y:'2024 2e Excep', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "Est le plus souvent multinodulaire", "Est rare", "Peut-être révélatrice d'un cancer"], a:[0,1,2,4]},
+  
+  // Session Décembre 2024 (3ème Exceptionnelle)
+  {id:114, t:'hepatique', y:'2024 3e Excep', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un carcinome d'origine digestive", "L'immunohistochimie peut aider à déterminer le primitif", "Peut-être révélatrice d'un cancer", "Est le plus souvent multi nodulaire"], a:[0,1,2,3,4]},
+  {id:115, t:'hepatique', y:'2024 3e Excep', tx:"À propos des tumeurs hépatiques :", tp:'qcm', o:["Elles sont définies comme l'ensemble des proliférations tumorales bénignes ou malignes primitives ou secondaires se développant au niveau du foie.", "Elles peuvent être secondaires", "La nature du parenchyme hépatique adjacent à la tumeur est importante pour déterminer le type tumoral", "Peuvent être au dépend des éléments vasculaires du foie", "Peuvent être au dépend des voies biliaires intra-hépatiques"], a:[0,1,2,3,4]},
+  
+  // Session Mai 2023
+  {id:116, t:'hepatique', y:'2023 Mai', tx:"Concernant la métastase hépatique :", tp:'qcm', o:["L'origine la plus fréquente est digestive", "L'étude immunohistochimique de celle-ci peut aider dans la recherche du primitif", "L'orientation vers un primitif nécessite une corrélation avec les données cliniques et paracliniques du patient", "Elle survient essentiellement sur un foie non cirrhotique", "Il s'agit le plus souvent d'une lésion unique"], a:[0,1,2,3]},
+  {id:117, t:'hepatique', y:'2023 Mai', tx:"L'hépatoblastome :", tp:'qcm', o:["Est une tumeur embryonnaire qui atteint surtout l'enfant", "Se caractérise biologiquement par une augmentation sérique de l'AFP", "Se révèle par une hépatomégalie tumorale", "La biopsie hépatique confirmer le diagnostic", "Son traitement est basé sur la chirurgie première suivi de la chimiothérapie"], a:[0,1,2,3]},
+  {id:118, t:'hepatique', y:'2023 Mai', tx:"Le carcinome hépatocellulaire fibrolamellaire :", tp:'qcm', o:["Se caractérise par une tendance aux métastases", "Survient sur un foie sain", "Est la tumeur hépatique maligne primitive la plus fréquente", "Se caractérise par une fibrose lamellaire", "Est de meilleur pronostic que le carcinome hépatocellulaire classique"], a:[1,3,4]},
+  {id:119, t:'hepatique', y:'2023 Mai', tx:"Le kyste biliaire hépatique :", tp:'qcm', o:["Est une pathologie très courante touchant jusqu'à 18% de la population", "Est rencontrés plus fréquemment chez les femmes", "Sa Paroi est constituée d'un épithélium de type biliaire actif et sécrétant", "Doit être obligatoirement reséqué chirurgicalement en cas de découverte fortuite", "Est le seul diagnostic à évoquer devant une lésion kystique du foie"], a:[1,2]},
+  
+  // Session Juin 2023
+  {id:120, t:'hepatique', y:'2023 Juin', tx:"À propos des tumeurs hépatiques :", tp:'qcm', o:["Elles sont définies uniquement comme l'ensemble des proliférations tumorales se développant au dépend des constituants du tissu hépatique", "Elles peuvent être secondaires", "Sont souvent associées à une cirrhose hépatique si elles sont primitives", "Peuvent être au dépend des éléments vasculaires du foie", "Peuvent être au dépend des voies biliaires intra-hépatiques"], a:[1,2,3,4]},
+  {id:121, t:'hepatique', y:'2023 Juin', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:122, t:'hepatique', y:'2023 Juin', tx:"L'hépatoblastome :", tp:'qcm', o:["Est une tumeur carcinomateuse qui atteint surtout l'adulte", "Se caractérise biologiquement par une augmentation sérique de l'AFP", "Se révèle par une hépatomégalie tumorale", "La biopsie hépatique est contre indiquée", "Son traitement est basé sur la chirurgie première suivi de la chimiothérapie"], a:[1,2]},
+  {id:123, t:'hepatique', y:'2023 Juin', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "Est le plus souvent multinodulaire", "Est rare", "Peut-être révélatrice d'un cancer"], a:[0,1,2,4]},
+  
+  // Session Janvier 2022
+  {id:124, t:'hepatique', y:'2022 Jan', tx:"L'angiome hépatique :", tp:'qcm', o:["Est une tumeur hépatique de nature vasculaire bénigne", "Est Souvent asymptomatique", "Son diagnostic est radiologique", "Sa ponction biopsie hépatique est contre-indiquée", "Son exérèse chirurgicale est obligatoire même s'il est asymptomatique"], a:[0,1,2,3]},
+  {id:125, t:'hepatique', y:'2022 Jan', tx:"Lors d'une localisation d'une métastase hépatique :", tp:'qcm', o:["L'origine la plus fréquente est osseuse", "L'étude immunohistochimique de celle-ci peut aider dans la recherche du primitif", "Elle survient essentiellement sur un foie non cirrhotique", "Il s'agit le plus souvent d'une lésion unique", "Il s'agit le plus souvent de lésions multiples de taille variable"], a:[1,2,4]},
+  {id:126, t:'hepatique', y:'2022 Jan', tx:"Le carcinome hépatocellulaire fibrolamellaire :", tp:'qcm', o:["Est de meilleur pronostic que le carcinome hépatocellulaire classique", "Survient sur un foie sain", "Se caractérise par une tendance aux métastases", "Est la tumeur hépatique maligne primitive la plus fréquente", "Se caractérise par une fibrose lamellaire de son stroma"], a:[0,1,4]},
+  {id:127, t:'hepatique', y:'2022 Jan', tx:"Le kyste biliaire hépatique :", tp:'qcm', o:["Sa paroi est constituée d'un revêtement malpighien pluristratifié kératinisé", "Est rencontrés plus fréquemment chez les femmes", "Sa Paroi est constituée d'un épithélium de type biliaire actif et sécrétant", "Doit être obligatoirement reséqué chirurgicalement même s'il est de petite taille et asymptomatique", "Est le seul diagnostic à évoquer devant une lésion kystique du foie"], a:[1,2]},
+  
+  // Session Janvier 2021
+  {id:128, t:'hepatique', y:'2021 Jan', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:129, t:'hepatique', y:'2021 Jan', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "Est le plus souvent multinodulaire", "L'immunohistochimie à elle seule peut toujours déterminer le primitif avec précision", "Peut être révélatrice d'un cancer"], a:[0,1,2,4]},
+  
+  // Session Janvier 2020
+  {id:130, t:'hepatique', y:'2020 Jan', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:131, t:'hepatique', y:'2020 Jan', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "Est le plus souvent multinodulaire", "L'immunohistochimie à elle seule peut toujours déterminer le primitif avec précision", "Peut être révélatrice d'un cancer"], a:[0,1,2,4]},
+  
+  // Session Janvier 2019
+  {id:132, t:'hepatique', y:'2019 Jan', tx:"Lors d'une localisation d'une métastase hépatique :", tp:'qcm', o:["L'origine la plus fréquente est digestive (estomac, colon, pancréas)", "L'étude immunohistochimique de celle ci peut aider dans la recherche du primitif", "L'origine la plus fréquente est prostatique chez l'homme, mammaire chez la femme", "Il s'agit le plus souvent d'une lésion unique de taille variable", "Il s'agit le plus souvent de lésions multiples de taille variable"], a:[0,1,4]},
+  {id:133, t:'hepatique', y:'2019 Jan', tx:"Le carcinome hépatocellulaire fibrolamellaire :", tp:'qcm', o:["Se caractérise par une tendance aux métastases", "Survient sur un foie sain", "Est la tumeur hépatique primitive la plus fréquente", "Se caractérise par une fibrose lamellaire", "Est de meilleur pronostic que le carcinome hépatocellulaire classique"], a:[1,3,4]},
+  {id:134, t:'hepatique', y:'2019 Jan', tx:"L'angiome hépatique :", tp:'qcm', o:["Est la tumeur hépatique bénigne la plus fréquente", "Est souvent de découverte fortuite", "Correspond à une prolifération vasculaire", "Correspond à une prolifération hépatocytaire", "La corrélation biopsie imagerie est nécessaire pour porter le diagnostic"], a:[0,1,2]},
+  
+  // Session Juin 2019
+  {id:135, t:'hepatique', y:'2019 Juin', tx:"À propos des tumeurs hépatiques :", tp:'qcm', o:["Elles sont définies uniquement comme l'ensemble des proliférations tumorales se développant au dépend des constituants du tissu hépatique", "Elles peuvent être secondaires", "La nature du parenchyme hépatique adjacent à la tumeur est importante", "Peuvent être au dépend des éléments vasculaires du foie", "Peuvent être au dépend des voies biliaires intra-hépatiques"], a:[1,2,3,4]},
+  {id:136, t:'hepatique', y:'2019 Juin', tx:"Concernant l'origine tissulaire des tumeurs primitives hépatiques :", tp:'qcm', o:["Le carcinome hépatocellulaire provient des structures hépatocytaires", "Le cholangiocarcinome provient des structures biliaires", "Les structures vasculaires ne donnent pas de tumeurs primitives hépatiques", "Il peut exister des tumeurs mixtes", "Il peut exister des tumeurs d'origine embryonnaire"], a:[0,1,3,4]},
+  {id:137, t:'hepatique', y:'2019 Juin', tx:"La localisation secondaire au niveau hépatique d'une tumeur maligne :", tp:'qcm', o:["Est plus fréquente qu'une tumeur primitive", "Est le plus souvent due à un néoplasme d'origine digestive", "Est le plus souvent multinodulaire", "Est rare", "Peut être révélatrice d'un cancer"], a:[0,1,2,4]}
+];
+
+const LABELS={sein:'Cancer du sein',hepatique:'Tumeurs hépatiques',colorectal:'Cancer colorectal',poumon:'Cancer du poumon',ovaire:'Tumeur de l\'ovaire',polype:'Polype / Polypose'};
+let sel={};
+let checked={};
+let activeTopic='all';
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',function(){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  this.classList.add('on');
+  activeTopic=this.dataset.t;
+  render();
+  updateStats();
+}));
+
+function getVisible(){return activeTopic==='all'?QS:QS.filter(q=>q.t===activeTopic);}
+
+function updateStats(){
+  const vis=getVisible();
+  const done=vis.filter(q=>checked[q.id]).length;
+  let correct=0;
+  vis.forEach(q=>{
+    if(!checked[q.id]) return;
+    const s=[...(sel[q.id]||new Set())].sort().join();
+    const a=[...q.a].sort().join();
+    if(s===a) correct++;
+  });
+  document.getElementById('sv-total').textContent=vis.length;
+  document.getElementById('sv-done').textContent=done;
+  document.getElementById('sv-score').textContent=done>0?Math.round(correct/done*100)+'%':'—';
+}
+
+function toggle(qid,idx){
+  if(checked[qid]) return;
+  const q=QS.find(x=>x.id===qid);
+  if(!sel[qid]) sel[qid]=new Set();
+  if(q.tp==='qcu'){
+    sel[qid]=new Set([idx]);
+  } else {
+    sel[qid].has(idx)?sel[qid].delete(idx):sel[qid].add(idx);
+  }
+  renderCard(qid);
+}
+
+function verify(qid){
+  if(!sel[qid]||sel[qid].size===0) return;
+  checked[qid]=true;
+  renderCard(qid);
+  updateStats();
+}
+
+function renderCard(qid){
+  const q=QS.find(x=>x.id===qid);
+  const el=document.getElementById('qcard-'+qid);
+  if(!el) return;
+  const s=sel[qid]||new Set();
+  const ch=checked[qid];
+  const ansSet=new Set(q.a);
+
+  const optsHtml=q.o.map((txt,i)=>{
+    const letter=String.fromCharCode(65+i);
+    const isSel=s.has(i);
+    const isAns=ansSet.has(i);
+    let cls='opt-label';
+    if(ch){
+      if(isSel&&isAns) cls='opt-label correct';
+      else if(isSel&&!isAns) cls='opt-label wrong';
+      else if(!isSel&&isAns) cls='opt-label missed';
+    } else if(isSel) cls='opt-label sel';
+    return `<label class="${cls}" onclick="toggle(${qid},${i})">
+      <div class="custom-cb"></div>
+      <span class="opt-letter">${letter}.</span>
+      <span class="opt-text">${txt}</span>
+    </label>`;
+  }).join('');
+
+  let fb='';
+  if(ch){
+    const selArr=[...s].sort().join();
+    const ansArr=[...q.a].sort().join();
+    if(selArr===ansArr){
+      fb=`<div class="fb ok">✔ Parfait — toutes les bonnes réponses !</div>`;
+    } else {
+      const letters=q.a.map(i=>String.fromCharCode(65+i)).join(', ');
+      fb=`<div class="fb nok">✖ Réponses correctes : <strong>${letters}</strong></div>`;
+    }
+  }
+
+  el.className='q'+(ch?' done':'');
+  el.innerHTML=`
+    <div class="qmeta">
+      <span class="qn">${q.examQ || ("Q"+q.id)}</span>
+
+      <span class="badge b-${q.t}">${LABELS[q.t]}</span>
+      ${q.tp==='qcu'?'<span class="badge b-qcu">QCU</span>':''}
+      <span class="badge b-year">${q.y}</span>
+    </div>
+    <div class="qtxt">${q.tx}</div>
+    <div class="opts">${optsHtml}</div>
+    ${!ch?`<button class="btn-check" onclick="verify(${qid})" ${s.size===0?'disabled':''}>Vérifier ma réponse</button>`:''}
+    ${fb}
+  `;
+}
+
+function render(){
+  const container=document.getElementById('qlist');
+  container.innerHTML='';
+  getVisible().forEach(q=>{
+    const d=document.createElement('div');
+    d.id='qcard-'+q.id;
+    container.appendChild(d);
+    renderCard(q.id);
+  });
+}
+
+function resetAll(){
+  sel={};checked={};
+  render();updateStats();
+}
+
+render();updateStats();
+</script>
